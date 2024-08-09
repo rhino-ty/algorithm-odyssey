@@ -1,0 +1,15 @@
+function solution(arr, divisor) {
+    let answer = [];
+    if (arr.length > 0) {
+        for (i = 0; i < arr.length; i++) {
+            if (arr[i] % divisor === 0) {
+                answer.push(arr[i])
+            }
+        }
+    }
+    if (answer.length === 0) {
+        answer.push(-1)
+    }
+    answer.sort((a, b) => a - b)
+    return answer;
+}
