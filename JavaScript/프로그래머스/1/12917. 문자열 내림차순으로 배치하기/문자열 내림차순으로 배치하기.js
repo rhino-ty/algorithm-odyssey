@@ -1,3 +1,5 @@
+// 문자열 대소문자 정렬의 이해도 부족 + reverse() 메소드를 모르고 있어 미숙함 발생
+
 function solution(s) {
   const strUpperArr = s
     .split('')
