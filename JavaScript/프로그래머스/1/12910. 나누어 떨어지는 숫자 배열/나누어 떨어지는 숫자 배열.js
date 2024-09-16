@@ -1,3 +1,4 @@
+// 2024-08-09 20:54:53
 // filter로 해결할 수 있을 거 같아 추가 작성함
 function solution(arr, divisor) {
     const arrFilter = arr.filter(num => num % divisor === 0)
