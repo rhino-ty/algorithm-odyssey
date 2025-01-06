@@ -12,11 +12,9 @@ function solution(numbers) {
   // 1트 실패,, 기본으로 `sort()` 이렇게 하면 유니코드로 정렬되는 걸 이용해서 했는데 엉망진창으로 틀렸다 ㅠㅠ
   // return numbers.sort().reverse().join("");
 
-  // 2트: 문자열에 +를 하면 그대로 이어 붙여진다는 걸 이용해 sort() 안에 기입해 해결하기 - 3, 30이 있다면 303 - 330 < 0 이기에 30, 3
-  const sortNumbers = numbers.map((el) => String(el)).sort((a, b) => b + a - (a + b));
-  // [0,0,0,0,0] 인 경우도 있어 제외
-  if (sortNumbers[0] === "0") {
-    return "0";
-  }
-  return sortNumbers.join("");
+  // 2트: 문자열 치환 후 이어붙여 -를 하면 빼진다는 js 특성을 이용해 sort() 안에 기입해 해결하기 - 3, 30이 있다면 303 - 330 < 0 이기에 30, 3
+
+  const sortNumbers = numbers.map((el) => String(el)).sort((a, b) => `${b}${a}` - `${a}${b}`);
+  // [0,0,0...] 인 경우도 있어 제외
+  return sortNumbers[0] === "0" ? "0" : sortNumbers.join("");
 }
