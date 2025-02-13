@@ -4,20 +4,22 @@
 // 2. 각각 정렬
 // 3. H의 각 높이마다 체크(이진 탐색 후 카운팅), H + 1까지 배열 만든 후 카운팅
 
+// arr는 내림차순
 function binarySearch(arr, target) {
   let left = 0;
   let right = arr.length;
 
   while (left < right) {
     const mid = Math.floor((left + right) / 2);
-    if (arr[mid] <= target) {
+    // 큰 값 찾기
+    if (arr[mid] > target) {
       left = mid + 1;
     } else {
       right = mid;
     }
   }
 
-  return arr.length - left; // target보다 큰 값의 개수 반환
+  return left; // 바로 큰 값의 개수를 반환
 }
 function beatlesWithHurdle(N, H, hurdles) {
   const topRocks = [];
@@ -25,35 +27,35 @@ function beatlesWithHurdle(N, H, hurdles) {
 
   // hurdles는 1-base
   for (let i = 1; i <= N; i++) {
-    i % 2 !== 0 ? topRocks.push(hurdles[i]) : bottomRocks.push(hurdles[i]);
+    i % 2 !== 0 ? bottomRocks.push(hurdles[i]) : topRocks.push(hurdles[i]);
   }
 
   // 정렬
-  bottomRocks.sort((a, b) => a - b);
-  topRocks.sort((a, b) => a - b);
+  bottomRocks.sort((a, b) => b - a);
+  topRocks.sort((a, b) => b - a);
 
-  let minObstacles = N; // 최대값으로 초기화
+  let minHurdles = N; // 최대값으로 초기화
   let count = 0; // 최소값을 가진 구간의 수
 
   // 각 높이별로 장애물 수 계산
   for (let height = 1; height <= H; height++) {
-    // 석순: h보다 큰 석순의 수
-    const bottomCount = binarySearch(bottomRocks, height - 1);
+    // 석순: (H-height+1)보다 큰 석순의 수
+    const bottomCount = binarySearch(bottomRocks, H - height);
 
-    // 종유석: (H-height+1)보다 큰 종유석의 수
-    const topCount = binarySearch(topRocks, H - height);
+    // 종유석: h보다 큰 종유석의 수
+    const topCount = binarySearch(topRocks, height - 1);
 
-    const totalObstacles = bottomCount + topCount;
+    const totalHurdles = bottomCount + topCount;
 
-    if (totalObstacles < minObstacles) {
-      minObstacles = totalObstacles;
+    if (totalHurdles < minHurdles) {
+      minHurdles = totalHurdles;
       count = 1;
-    } else if (totalObstacles === minObstacles) {
+    } else if (totalHurdles === minHurdles) {
       count++;
     }
   }
 
-  return `${minObstacles} ${count}`;
+  return `${minHurdles} ${count}`;
 }
 
 // 폐기, 구현하다가 단순 문제가 아닌 거 같고, 전체 순회를 해버리면 O(N * M)이 돼버려서 애초에 안됨.
