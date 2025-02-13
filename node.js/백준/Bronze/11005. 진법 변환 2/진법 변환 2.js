@@ -1,13 +1,17 @@
 function convertBaseB(N, B) {
   const digits = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  let result = '';
+  let result = [];
+
+  if (N === 0) {
+    return '0';
+  }
 
   while (N > 0) {
-    result = digits[N % B] + result;
+    result.push(digits[N % B]);
     N = Math.floor(N / B);
   }
 
-  return result || '0';
+  return result.reverse().join('');
 }
 
 const fs = require('fs');
