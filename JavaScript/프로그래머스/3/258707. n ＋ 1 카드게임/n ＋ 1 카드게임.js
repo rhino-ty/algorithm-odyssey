@@ -17,8 +17,9 @@ function solution(coin, cards) {
     // 뽑은 카드를 discardedCards에 추가
     discardedCards.push(card1, card2);
 
-    // 우선순위 1: 동전 0개 - 손에 든 카드 두 장으로 합이 n+1
     let canProceed = false;
+
+    // 우선순위 1: 동전 0개 - 손에 든 카드 두 장으로 합이 n+1
     for (let i = 0; i < handCards.length; i++) {
       for (let j = i + 1; j < handCards.length; j++) {
         if (handCards[i] + handCards[j] === targetSum) {
