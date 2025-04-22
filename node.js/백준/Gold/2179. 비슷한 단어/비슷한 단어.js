@@ -1,4 +1,4 @@
-// 앞부분이 가장 많이 일치하는 두 단어를 찾는 것
+// 앞부분이 가장 많이 일치하는 두 단어를 찾는 것, 이중 반목문으로 그냥 구현하면 될 듯?
 // 1. 입력값 N과 N개의 영단어들을 배열로 저장
 // 2. 가장 긴 공통 접두사 길이와 해당하는 단어 쌍을 추적할 변수 선언 및 초기화
 // 3. 이중 반복문으로 모든 단어 쌍을 비교
@@ -11,8 +11,11 @@ function findMostSimilarWords(N, words) {
   let firstWordIdx = -1;
   let secondWordIdx = -1;
 
-  for (let i = 0; i < N; i++) {
-    for (let j = 0; j < N; j++) {
+  // for (let i = 0; i < N; i++) {
+  //   for (let j = 0; j < N; j++) {
+  //     if (i === j) continue; // 같은 단어는 비교하지 않음
+  for (let i = 0; i < N - 1; i++) {
+    for (let j = i + 1; j < N; j++) {
       if (i === j) continue; // 같은 단어는 비교하지 않음
 
       const preLength = getCommonPreLength(words[i], words[j]);
