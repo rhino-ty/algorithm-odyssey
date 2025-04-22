@@ -16,8 +16,6 @@ function findMostSimilarWords(N, words) {
   //     if (i === j) continue; // 같은 단어는 비교하지 않음
   for (let i = 0; i < N - 1; i++) {
     for (let j = i + 1; j < N; j++) {
-      if (i === j) continue; // 같은 단어는 비교하지 않음
-
       const preLength = getCommonPreLength(words[i], words[j]);
 
       if (preLength > maxPreLength) {
