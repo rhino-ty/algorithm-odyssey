@@ -11,16 +11,24 @@
 
 function getBoomedStr(str, boomStr) {
   const stack = [];
+  const boomLen = boomStr.length;
 
   for (let i = 0; i < str.length; i++) {
     stack.push(str[i]);
 
-    if (stack.length < boomStr.length) continue;
+    if (stack.length < boomLen) continue;
 
-    const curStr = stack.slice(stack.length - boomStr.length).join('');
+    // const curStr = stack.slice(stack.length - boomLen).join('');
+    let isBoom = true;
+    for (let j = 0; j < boomLen; j++) {
+      if (stack[stack.length - boomLen + j] !== boomStr[j]) {
+        isBoom = false;
+        break;
+      }
+    }
 
-    if (curStr === boomStr) {
-      for (let j = 0; j < boomStr.length; j++) {
+    if (isBoom) {
+      for (let j = 0; j < boomLen; j++) {
         stack.pop();
       }
     }
