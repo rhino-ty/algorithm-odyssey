@@ -9,7 +9,14 @@
 //    - 1, 2는 따로 하고, 3부터 모든 시작점 i에 대해 끝점 j = i+len-1 계산
 //    - DP[i][j] = (arr[i]==arr[j] && DP[i+1][j-1])
 
-function isNumbersPalindrome(N, boardNumbers, M, questions) {
+function isNumbersPalindrome() {
+  const fs = require('fs');
+  const input = fs.readFileSync(0).toString().trim().split('\n');
+
+  const N = parseInt(input[0]);
+  const boardNumbers = input[1].split(' ').map(Number);
+  const M = parseInt(input[2]);
+
   const dp = Array.from({ length: N }, () => Array.from({ length: N }, () => 0));
 
   for (let i = 0; i < N; i++) {
@@ -32,22 +39,24 @@ function isNumbersPalindrome(N, boardNumbers, M, questions) {
     }
   }
 
-  // 질문에 답변
+  // 질문에 답변, 출력 길이가 최악일 경우 백만이 넘어가니, 배열이 아닌 문자열 직접 삽입으로 출력
+  // 2. 배열도 문자열도 아닌 console.log로 바로 출력
   let answer = '';
-  for (let q = 0; q < M; q++) {
-    const [S, E] = questions[q];
+  for (let q = 3; q < 3 + M; q++) {
+    const [S, E] = input[q].split(' ').map(Number);
     // 입력은 1-base, 배열은 0-base이므로 인덱스 조정
+    // console.log(dp[S - 1][E - 1]);
+    // process.stdout.write(dp[S - 1][E - 1] + '\n');
     answer += dp[S - 1][E - 1] + '\n';
   }
-
-  return answer.trim();
+  return answer;
 }
 
-const fs = require('fs');
-const [N, boardNumbers, M, ...questions] = fs
-  .readFileSync(0)
-  .toString()
-  .split('\n')
-  .map((i) => i.split(' ').map(Number));
+// const fs = require('fs');
+// const [N, boardNumbers, M, ...questions] = fs
+//   .readFileSync(0)
+//   .toString()
+//   .split('\n')
+//   .map((i) => i.split(' ').map(Number));
 
-console.log(isNumbersPalindrome(N, boardNumbers, M, questions));
+console.log(isNumbersPalindrome());
