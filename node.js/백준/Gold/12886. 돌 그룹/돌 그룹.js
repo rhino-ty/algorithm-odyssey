@@ -55,9 +55,7 @@ function canEqualizeStones(stones) {
     const [s1, s2, s3] = queue[head++];
 
     // 목표 달성 확인
-    if (s1 === target && s2 === target && s3 === target) {
-      return 1;
-    }
+    if (s1 === target && s2 === target && s3 === target) return 1;
 
     // 직접 3가지 경우를 처리 (배열 생성 오버헤드 제거)
     const operations = [
