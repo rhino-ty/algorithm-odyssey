@@ -26,53 +26,117 @@
 //        - visited[newA][newB]에 true
 // 5. 큐가 비어서 BFS가 끝났다면 찾지 못했기에 return 0
 
+// 최적화
 function canEqualizeStones(stones) {
-  let [A, B, C] = stones;
+  const [A, B, C] = stones;
   const total = A + B + C;
+
   if (total % 3 !== 0) return 0;
   const target = total / 3;
 
+  // 이미 목표 상태인지 확인
+  if (A === target && B === target && C === target) return 1;
+
+  // 메모리 최적화: Set 사용으로 메모리 사용량 대폭 감소
+  const visited = new Set();
   const queue = [];
-  const visited = new Array(total + 1).fill().map(() => new Array(total + 1).fill(false));
 
-  const sortedStones = stones.sort((a, b) => a - b);
+  // 초기 상태를 정렬하여 일관성 유지
+  const sortedStones = stones.slice().sort((a, b) => a - b);
+  const initialKey = `${sortedStones[0]},${sortedStones[1]}`;
+
   queue.push(sortedStones);
-  visited[sortedStones[0]][sortedStones[1]] = true;
+  visited.add(initialKey);
 
-  while (queue.length > 0) {
-    const [curA, curB, curC] = queue.shift();
+  // 성능 최적화: shift() 대신 인덱스 사용
+  let head = 0;
 
-    // 기저: 목표 달성 확인
-    if (curA === target && curB === target && curC === target) return 1;
+  while (head < queue.length) {
+    const [s1, s2, s3] = queue[head++];
 
-    const combi = [
-      [curA, curB],
-      [curA, curC],
-      [curB, curC],
+    // 목표 달성 확인
+    if (s1 === target && s2 === target && s3 === target) {
+      return 1;
+    }
+
+    // 직접 3가지 경우를 처리 (배열 생성 오버헤드 제거)
+    const operations = [
+      [s1, s2, s3], // s1, s2 연산
+      [s1, s3, s2], // s1, s3 연산
+      [s2, s3, s1], // s2, s3 연산
     ];
 
-    for (const [X, Y] of combi) {
-      if (X === Y) continue;
+    for (const [x, y, z] of operations) {
+      if (x === y) continue;
 
-      let small = Math.min(X, Y);
-      let large = Math.max(X, Y);
+      const small = x < y ? x : y; // Math.min 대신 삼항연산자
+      const large = x < y ? y : x; // Math.max 대신 삼항연산자
 
-      const newSmall = small * 2;
+      const newSmall = small << 1; // small * 2 대신 비트시프트
       const newLarge = large - small;
-      const newThird = total - newSmall - newLarge;
 
-      const newState = [newSmall, newLarge, newThird].sort((a, b) => a - b);
-      const [newA, newB, newC] = newState;
+      // 새로운 상태 생성 및 정렬
+      const newState = [newSmall, newLarge, z].sort((a, b) => a - b);
+      const stateKey = `${newState[0]},${newState[1]}`;
 
-      if (newA >= 0 && newB >= 0 && newA <= total && newB <= total && !visited[newA][newB]) {
-        visited[newA][newB] = true;
-        queue.push([newA, newB, newC]);
+      // 정렬된 전체 상태 검증
+      if (!visited.has(stateKey)) {
+        visited.add(stateKey);
+        queue.push(newState);
       }
     }
   }
 
   return 0;
 }
+
+// function canEqualizeStones(stones) {
+//   let [A, B, C] = stones;
+//   const total = A + B + C;
+//   if (total % 3 !== 0) return 0;
+//   const target = total / 3;
+
+//   const queue = [];
+//   const visited = new Array(total + 1).fill().map(() => new Array(total + 1).fill(false));
+
+//   const sortedStones = stones.sort((a, b) => a - b);
+//   queue.push(sortedStones);
+//   visited[sortedStones[0]][sortedStones[1]] = true;
+
+//   while (queue.length > 0) {
+//     const [curA, curB, curC] = queue.shift();
+
+//     // 기저: 목표 달성 확인
+//     if (curA === target && curB === target && curC === target) return 1;
+
+//     const combi = [
+//       [curA, curB],
+//       [curA, curC],
+//       [curB, curC],
+//     ];
+
+//     for (const [X, Y] of combi) {
+//       if (X === Y) continue;
+
+//       let small = Math.min(X, Y);
+//       let large = Math.max(X, Y);
+
+//       const newSmall = small * 2;
+//       const newLarge = large - small;
+//       const newThird = total - newSmall - newLarge;
+
+//       const newState = [newSmall, newLarge, newThird].sort((a, b) => a - b);
+//       const [newA, newB, newC] = newState;
+
+//       if (newA >= 0 && newB >= 0 && newA <= total && newB <= total && !visited[newA][newB]) {
+//         visited[newA][newB] = true;
+//         queue.push([newA, newB, newC]);
+//       }
+//     }
+//   }
+
+//   return 0;
+// }
 
 const fs = require('fs');
 const stones = fs.readFileSync(0).toString().trim().split(' ').map(Number);
