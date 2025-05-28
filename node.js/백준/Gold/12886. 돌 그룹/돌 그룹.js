@@ -34,6 +34,7 @@ function canEqualizeStones(stones) {
 
   const queue = [];
   const visited = new Array(total + 1).fill().map(() => new Array(total + 1).fill(false));
+
   const sortedStones = stones.sort((a, b) => a - b);
   queue.push(sortedStones);
   visited[sortedStones[0]][sortedStones[1]] = true;
@@ -42,17 +43,15 @@ function canEqualizeStones(stones) {
     const [curA, curB, curC] = queue.shift();
 
     // 기저: 목표 달성 확인
-    if (curA === target && curB === target && curC === target) {
-      return 1;
-    }
+    if (curA === target && curB === target && curC === target) return 1;
 
     const combi = [
-      [curA, curB, curC],
-      [curA, curC, curB],
-      [curB, curC, curA],
+      [curA, curB],
+      [curA, curC],
+      [curB, curC],
     ];
 
-    for (const [X, Y, Z] of combi) {
+    for (const [X, Y] of combi) {
       if (X === Y) continue;
 
       let small = Math.min(X, Y);
@@ -60,7 +59,7 @@ function canEqualizeStones(stones) {
 
       const newSmall = small * 2;
       const newLarge = large - small;
-      const newThird = Z;
+      const newThird = total - newSmall - newLarge;
 
       const newState = [newSmall, newLarge, newThird].sort((a, b) => a - b);
       const [newA, newB, newC] = newState;
