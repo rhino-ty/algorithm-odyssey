@@ -19,10 +19,10 @@ function findShortestPath(N, K) {
       break;
     }
 
-    // 파이썬 표준 순서: +1, -1, *2
-    const nextPositions = [cur + 1, cur - 1, cur * 2];
+    // +1, -1, *2
+    const nextPosArr = [cur + 1, cur - 1, cur * 2];
 
-    for (const next of nextPositions) {
+    for (const next of nextPosArr) {
       if (next >= 0 && next < 100001 && !visited[next]) {
         visited[next] = true;
         dist[next] = dist[cur] + 1;
