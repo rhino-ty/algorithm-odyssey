@@ -8,8 +8,12 @@ function solution(numbers) {
   // return numbers.sort().reverse().join("");
 
   // 2트: 문자열 치환 후 이어붙여 -를 하면 빼진다는 js 특성을 이용해 sort() 안에 기입해 해결하기 - 3, 30이 있다면 303 - 330 < 0 이기에 30, 3
-
-  const sortedNums = numbers.map((el) => String(el)).sort((a, b) => `${b}${a}` - `${a}${b}`);
+  // const sortedNums = numbers.sort((a, b) => `${b}${a}` - `${a}${b}`);
+  // // [0,0,0...] 인 경우도 있어 제외
+  // return sortedNums[0] === "0" ? "0" : sortedNums.join("");
+  
+  // 3트: join을 위로 붙이니 된다;
+  const sortedNums = numbers.sort((a, b) => `${b}${a}` - `${a}${b}`).join("");
   // [0,0,0...] 인 경우도 있어 제외
-  return sortedNums[0] === "0" ? "0" : sortedNums.join("");
+  return sortedNums[0] === "0" ? "0" : sortedNums;
 }
